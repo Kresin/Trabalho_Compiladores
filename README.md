@@ -2,8 +2,8 @@
 
 ### Alunos ###
 * Gabriel Kresin
-* 
-* 
+* Vinícius Zoz
+* Haziel Albuquerque Netto
 
 ### Checklist Trabalho - Parte 1 ###
 
