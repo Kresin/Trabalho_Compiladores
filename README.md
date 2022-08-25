@@ -42,7 +42,7 @@ barra de status. Caso nenhum arquivo seja selecionado, o estado da interface, an
 pressionado, deve ser mantido, ou seja, o editor deve manter o texto que está sendo editado, a área para
 mensagens não deve ser limpa e a barra de status não deve ser atualizada. Devem ser abertos arquivos texto
 (extensão .txt) compatíveis com o Notepad.
-- []  Quando o botão salvar for pressionado (ou a tecla de atalho correspondente), a ação deve ser: (1) se o arquivo
+- [] Quando o botão salvar for pressionado (ou a tecla de atalho correspondente), a ação deve ser: (1) se o arquivo
 for novo, possibilitar a seleção de pasta/nome do arquivo, salvar o conteúdo do editor no arquivo com o nome e
 no local selecionados, manter no editor o texto que está sendo editado, limpar a área para mensagens e
 atualizar a barra de status; (2) caso contrário, salvar as alterações do arquivo editado, manter no editor o texto
