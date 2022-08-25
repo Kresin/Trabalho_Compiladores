@@ -5,6 +5,9 @@
 * Vinícius Zoz
 * Haziel Albuquerque Netto
 
+### Discord ###
+https://discord.gg/vPfkXE2z
+
 ### Checklist Trabalho - Parte 1 ###
 
 - [x] A interface do compilador deve ter os seguintes componentes: uma barra de ferramentas (com tamanho mínimo
