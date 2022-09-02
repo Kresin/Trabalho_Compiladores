@@ -22,7 +22,7 @@ questão), considerando que: a barra de ferramentas deve ser redimensionada na h
 devem ter o tamanho alterado; o editor deve ser redimensionado na horizontal e na vertical; a área para
 mensagens deve ser redimensionada na horizontal e na vertical, a barra de status deve ser redimensionada na
 horizontal.
-- [ ] Deve ser possível alterar o tamanho vertical do editor e da área para mensagens movendo a barra de divisão
+- [] Deve ser possível alterar o tamanho vertical do editor e da área para mensagens movendo a barra de divisão
 existente entre eles.
 - [x] Deve apresentar o número da linha, à esquerda, iniciando em 1. Não deve ser possível alterar o número da
 linha.
