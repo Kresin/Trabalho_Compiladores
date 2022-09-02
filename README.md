@@ -13,7 +13,7 @@ https://discord.gg/vPfkXE2z
 - [x] A interface do compilador deve ter os seguintes componentes: uma barra de ferramentas (com tamanho mínimo
 900x70), uma área para edição de programas – editor, uma área para visualização das mensagens e uma
 barra de status (com tamanho mínimo 900x25), dispostos conforme Figura 1.
-- [] Deve ser possível minimizar, maximizar, fechar e alterar o tamanho da janela, sendo 910x600 o tamanho
+- [ ] Deve ser possível minimizar, maximizar, fechar e alterar o tamanho da janela, sendo 910x600 o tamanho
 mínimo da janela. Todos os componentes de interface devem ficar totalmente visíveis, como mostrado na
 Figura 1, independente do tamanho da janela.
 - [x] Quando o tamanho for alterado ou a janela for maximizada, os componentes da interface também devem ter o
@@ -22,7 +22,7 @@ questão), considerando que: a barra de ferramentas deve ser redimensionada na h
 devem ter o tamanho alterado; o editor deve ser redimensionado na horizontal e na vertical; a área para
 mensagens deve ser redimensionada na horizontal e na vertical, a barra de status deve ser redimensionada na
 horizontal.
-- [] Deve ser possível alterar o tamanho vertical do editor e da área para mensagens movendo a barra de divisão
+- [ ] Deve ser possível alterar o tamanho vertical do editor e da área para mensagens movendo a barra de divisão
 existente entre eles.
 - [x] Deve apresentar o número da linha, à esquerda, iniciando em 1. Não deve ser possível alterar o número da
 linha.
