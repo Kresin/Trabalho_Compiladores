@@ -1,4 +1,4 @@
-package com.mycompany.compilador.view;
+package com.compilador.view;
 
 import java.awt.Color;
 import java.awt.Component;
