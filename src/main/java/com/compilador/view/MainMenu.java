@@ -351,27 +351,40 @@ public class MainMenu extends javax.swing.JFrame {
 
         StringBuilder message = new StringBuilder();
         message.append("linha").append("   ").append("classe").append("               ").append("lexema").append("\n");
+        boolean commentBlock = false;
+        boolean lineComment = false;
         for (String line : lines.collect(Collectors.toList())) {
+            lineComment = false;
             String[] inputs = line.trim().split(" ");
             for (String input : inputs) {
-                compiler.setInput(new StringReader(input));
-                try {
-                    Token token = compiler.nextToken();
-                    if (token != null) {
-                        StringBuilder newLine = new StringBuilder();
-                        newLine.append(getLineText(String.valueOf(numberLine)));
-                        newLine.append(getClassText(token.getTokenClass(token.getId())));
-                        newLine.append(token.getLexeme());
-                        newLine.append("\n");
-                        message.append(newLine.toString());
+                if (input.equals("{")) {
+                    commentBlock = true;
+                } else if (input.startsWith("@@")) {
+                    lineComment = true;
+                }
+                if (!commentBlock && !lineComment) {
+                    compiler.setInput(new StringReader(input));
+                    try {
+                        Token token = compiler.nextToken();
+                        if (token != null) {
+                            StringBuilder newLine = new StringBuilder();
+                            newLine.append(getLineText(String.valueOf(numberLine)));
+                            newLine.append(getClassText(token.getTokenClass(token.getId())));
+                            newLine.append(token.getLexeme());
+                            newLine.append("\n");
+                            message.append(newLine.toString());
+                        }
+                    } catch (LexicalError ex) {
+                        if (ex.getMessage().contains("símbolo")) {
+                            jTextArea_messages.setText(String.format("Erro na linha %s - %s %s", numberLine, input, ex.getMessage()));
+                        } else {
+                            jTextArea_messages.setText(String.format("Erro na linha %s - %s", numberLine, ex.getMessage()));
+                        }
+                        throw new RuntimeException("Erro ao compilar o programa. Veja o campo de mensagem para mais detalhes");
                     }
-                } catch (LexicalError ex) {
-                    if (ex.getMessage().contains("símbolo")) {
-                        jTextArea_messages.setText(String.format("Erro na linha %s - %s %s", numberLine, input, ex.getMessage()));
-                    } else {
-                        jTextArea_messages.setText(String.format("Erro na linha %s - %s", numberLine, ex.getMessage()));
-                    }
-                    throw new RuntimeException("Erro ao compilar o programa. Veja o campo de mensagem para mais detalhes");
+                }
+                if (input.equals("}")) {
+                    commentBlock = false;
                 }
             }
             numberLine++;
