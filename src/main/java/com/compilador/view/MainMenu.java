@@ -352,6 +352,7 @@ public class MainMenu extends javax.swing.JFrame {
         StringBuilder message = new StringBuilder();
         message.append("linha").append("   ").append("classe").append("               ").append("lexema").append("\n");
         boolean commentBlock = false;
+        int commentBlockLineStart = 1;
         boolean lineComment = false;
         for (String line : lines.collect(Collectors.toList())) {
             lineComment = false;
@@ -359,6 +360,7 @@ public class MainMenu extends javax.swing.JFrame {
             for (String input : inputs) {
                 if (input.equals("{")) {
                     commentBlock = true;
+                    commentBlockLineStart = numberLine;
                 } else if (input.startsWith("@@")) {
                     lineComment = true;
                 }
@@ -390,7 +392,12 @@ public class MainMenu extends javax.swing.JFrame {
             numberLine++;
         }
 
-        jTextArea_messages.setText(message.toString());
+        if (commentBlock) {
+            jTextArea_messages.setText(String.format("Erro na linha %s - comentário de bloco inválido ou não finalizado", commentBlockLineStart));
+        } else {
+            message.append("\n").append("Programa compilado com sucesso");
+            jTextArea_messages.setText(message.toString());
+        }
     }//GEN-LAST:event_jButton_compileActionPerformed
 
     private String getLineText(String text) {
