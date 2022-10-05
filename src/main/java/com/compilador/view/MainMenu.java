@@ -353,12 +353,12 @@ public class MainMenu extends javax.swing.JFrame {
         message.append("linha").append("   ").append("classe").append("               ").append("lexema").append("\n");
         boolean commentBlock = false;
         int commentBlockLineStart = 1;
-        boolean lineComment = false;
+        boolean lineComment;
         for (String line : lines.collect(Collectors.toList())) {
             lineComment = false;
             String[] inputs = line.trim().split(" ");
             for (String input : inputs) {
-                if (input.equals("{")) {
+                if (input.equals("[")) {
                     commentBlock = true;
                     commentBlockLineStart = numberLine;
                 } else if (input.startsWith("@@")) {
@@ -385,7 +385,7 @@ public class MainMenu extends javax.swing.JFrame {
                         throw new RuntimeException("Erro ao compilar o programa. Veja o campo de mensagem para mais detalhes");
                     }
                 }
-                if (input.equals("}")) {
+                if (input.equals("]")) {
                     commentBlock = false;
                 }
             }
