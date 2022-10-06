@@ -6,6 +6,10 @@ package com.compilador.view;
 
 import com.compilador.model.FileService;
 import com.compilador.model.compiler.LexicalError;
+import com.compilador.model.compiler.SemanticError;
+import com.compilador.model.compiler.Semantico;
+import com.compilador.model.compiler.Sintatico;
+import com.compilador.model.compiler.SyntaticError;
 import com.compilador.model.compiler.Token;
 import com.compilador.model.compiler.Trabalho2;
 import java.awt.datatransfer.Clipboard;
@@ -345,58 +349,26 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton_teamActionPerformed
 
     private void jButton_compileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_compileActionPerformed
-        Trabalho2 compiler = new Trabalho2();
-        Stream<String> lines = jTextArea_editor.getText().lines();
-        int numberLine = 1;
+        Trabalho2 lexico = new Trabalho2();
+        Sintatico sintatico = new Sintatico();
+        Semantico semantico = new Semantico();
+        //...
+        lexico.setInput(jTextArea_editor.getText());
+        //...
+        try {
+            sintatico.parse(lexico, semantico);    // tradução dirigida pela sintaxe
+        } // mensagem: programa compilado com sucesso - área reservada para mensagens
+        catch (LexicalError e) {
+            //Trata erros léxicos, conforme especificação da parte 2 - do compilador
+        } catch (SyntaticError e) {
+            System.out.println(e.getPosition() + " símbolo encontrado: na entrada " + e.getMessage());
 
-        StringBuilder message = new StringBuilder();
-        message.append("linha").append("   ").append("classe").append("               ").append("lexema").append("\n");
-        boolean commentBlock = false;
-        int commentBlockLineStart = 1;
-        boolean lineComment;
-        for (String line : lines.collect(Collectors.toList())) {
-            lineComment = false;
-            String[] inputs = line.trim().split(" ");
-            for (String input : inputs) {
-                if (input.equals("[")) {
-                    commentBlock = true;
-                    commentBlockLineStart = numberLine;
-                } else if (input.startsWith("@@")) {
-                    lineComment = true;
-                }
-                if (!commentBlock && !lineComment) {
-                    compiler.setInput(new StringReader(input));
-                    try {
-                        Token token = compiler.nextToken();
-                        if (token != null) {
-                            StringBuilder newLine = new StringBuilder();
-                            newLine.append(getLineText(String.valueOf(numberLine)));
-                            newLine.append(getClassText(token.getTokenClass(token.getId())));
-                            newLine.append(token.getLexeme());
-                            newLine.append("\n");
-                            message.append(newLine.toString());
-                        }
-                    } catch (LexicalError ex) {
-                        if (ex.getMessage().contains("símbolo")) {
-                            jTextArea_messages.setText(String.format("Erro na linha %s - %s %s", numberLine, input, ex.getMessage()));
-                        } else {
-                            jTextArea_messages.setText(String.format("Erro na linha %s - %s", numberLine, ex.getMessage()));
-                        }
-                        throw new RuntimeException("Erro ao compilar o programa. Veja o campo de mensagem para mais detalhes");
-                    }
-                }
-                if (input.equals("]")) {
-                    commentBlock = false;
-                }
-            }
-            numberLine++;
-        }
-
-        if (commentBlock) {
-            jTextArea_messages.setText(String.format("Erro na linha %s - comentário de bloco inválido ou não finalizado", commentBlockLineStart));
-        } else {
-            message.append("\n").append("Programa compilado com sucesso");
-            jTextArea_messages.setText(message.toString());
+            //Trata erros sintáticos
+            //linha 				sugestão: converter getPosition em linha
+            //símbolo encontrado    sugestão: implementar um método getToken no sintatico
+            //mensagem - símbolos esperados,   alterar ParserConstants.java, String[] PARSER_ERROR		
+        } catch (SemanticError e) {
+            //Trata erros semânticos
         }
     }//GEN-LAST:event_jButton_compileActionPerformed
 
