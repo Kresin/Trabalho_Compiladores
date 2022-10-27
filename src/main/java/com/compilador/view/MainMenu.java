@@ -10,7 +10,6 @@ import com.compilador.model.compiler.SemanticError;
 import com.compilador.model.compiler.Semantico;
 import com.compilador.model.compiler.Sintatico;
 import com.compilador.model.compiler.SyntaticError;
-import com.compilador.model.compiler.Token;
 import com.compilador.model.compiler.Trabalho2;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
@@ -20,9 +19,6 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.io.StringReader;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -357,6 +353,7 @@ public class MainMenu extends javax.swing.JFrame {
         //...
         try {
             sintatico.parse(lexico, semantico);    // tradução dirigida pela sintaxe
+            jTextArea_messages.setText("Programa compilado com sucesso");
         } // mensagem: programa compilado com sucesso - área reservada para mensagens
         catch (LexicalError e) {
             //Trata erros léxicos, conforme especificação da parte 2 - do compilador

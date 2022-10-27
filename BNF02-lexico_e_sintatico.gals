@@ -1,0 +1,215 @@
+#Options
+GenerateScanner = true
+GenerateParser = true
+Language = Java
+ScannerName = Trabalho2
+ParserName = Sintatico
+SemanticName = Semantico
+ScannerCaseSensitive = true
+ScannerTable = Compact
+Input = Stream
+Parser = LL
+#RegularDefinitions
+dig : [0-9]
+dig2: [1-9]
+min : [a-z]
+mai : [A-Z]
+under:_
+begin: {mai} | {min}
+input:({under}? ({dig} | {begin}))*
+PI:{dig}+
+PF:\.{dig}+
+OG:d {dig2} {dig}*
+
+#Tokens
+//identificador : {letra}+ {dig}*
+
+//1 - a IDENTIFICADOR
+identificador:{begin}+ {dig}* ({input}) ({dig}|{begin})*
+
+
+//b - contante int
+cint:{PI} | {dig}* {dig2}+ {OG}
+
+
+//c - constante float
+cfloat:{PI}? {PF} | {PI}? \. {dig}* {dig2} {OG}
+
+
+//d - constante char
+cchar:\\(s|t|n)
+
+
+//e - constante string
+cstring:\"[^\" \n \\]* \"
+
+
+//f - comentario de linha
+linha:!#.*                                                   
+
+
+//g - comentario de bloco
+bloco:!\[ \n ([^\[ \]]*\n)? \]                              
+
+
+//palavras reservadas: boolean break
+pr_boolean = identificador: "boolean"
+pr_break = identificador: "break"
+pr_char = identificador: "char"
+pr_do = identificador: "do"
+pr_else = identificador: "else"
+pr_end = identificador: "end" 
+pr_false = identificador: "false" 
+pr_float = identificador: "float"
+pr_fun = identificador: "fun"
+pr_if = identificador: "if"
+pr_int = identificador: "int"
+pr_main = identificador: "main" 
+pr_print = identificador: "print"
+pr_println = identificador: "println"
+pr_readln = identificador: "readln"
+pr_string = identificador: "string"
+pr_true = identificador: "true"
+pr_val = identificador: "val"
+pr_var = identificador: "var"
+pr_while = identificador: "while" 
+
+//simbolos especiais: : , ; = ( ) { } == !=
+
+"!"
+"=="
+"="
+"!="
+":"
+"," 
+";" 
+"(" 
+")" 
+"{" 
+"}" 
+"<" 
+">" 
+"+" 
+"-" 
+"*" 
+"/" 
+"%"
+"&&"
+"||"
+
+//reconhecer e ignorar caracteres de formatacao
+:[\s\t\n]
+
+//reconhecer e ignorar comentarios
+//:! @@ [^\n]*
+//:! \{ [^\}]* \}
+
+
+#NonTerminals
+<programa>
+<lista_comando>
+<lista_de_identificadores>
+<lista_de_instrucoes>
+<lista_expressao>
+<comando>
+<comando_atribuicao>
+<comando_entrada>
+<comando_repeticao>
+<comando_saida>
+<comando_selecao> 
+<selecao_opcional>
+<declaracao_constantes>
+<declaracao_variaveis>
+<valor>
+<tipo>
+
+<expressao>
+<expressao_>
+<elemento>
+
+<relacional>
+<relacional_>
+<operador_relacional>
+
+<aritmetica>
+<aritmetica_>
+
+<termo>
+<termo_>
+
+<fator>
+
+<entrada_opcional>
+
+<lista_de_identificadores1>
+<lista_de_identificadores2>
+<lista_de_identificadores3>
+<lista_comando1>
+<lista_expressao1>
+<lista_de_instrucoes1>
+<lista_de_instrucoes2>
+#Grammar
+<programa> ::= pr_fun pr_main "{" <lista_de_instrucoes> "}" ;
+
+<lista_de_instrucoes> ::= <lista_de_instrucoes2><lista_de_instrucoes1> ;
+<lista_de_instrucoes1> ::=   <lista_de_instrucoes> | î ;
+<lista_de_instrucoes2> ::= <declaracao_constantes> | <declaracao_variaveis> | <comando> ;
+
+<lista_de_identificadores1> ::= ":" <tipo><lista_de_identificadores2> | "=" <valor> ";" ;
+
+<lista_de_identificadores2> ::= "=" <valor> ";" | ";" ;
+
+<declaracao_constantes> ::= pr_val<lista_de_identificadores><lista_de_identificadores1> ;
+
+<declaracao_variaveis> ::= pr_var<lista_de_identificadores><lista_de_identificadores1> ;
+ 
+<comando> ::= <comando_atribuicao> | <comando_entrada> | <comando_saida> | <comando_selecao> | <comando_repeticao> | pr_break ";" ;
+<lista_comando> ::= <comando><lista_comando1> ;
+<lista_comando1> ::= <lista_comando> | î ;
+ 
+<comando_entrada> ::= pr_readln "(" <entrada_opcional> <lista_de_identificadores> ")" ";" ;
+<entrada_opcional> ::= cstring"," | î ;
+ 
+<comando_saida> ::= pr_print "(" <lista_expressao> ")" ";" | pr_println "(" <lista_expressao> ")" ";" ;
+<lista_expressao> ::= <expressao><lista_expressao1> ;
+<lista_expressao1> ::= ","<lista_expressao> | î ;
+ 
+<comando_selecao> ::= pr_if"(" <expressao> ")" <lista_comando> <selecao_opcional> pr_end";" ;
+<selecao_opcional> ::= pr_else <lista_comando> | î ;
+ 
+<comando_repeticao> ::= pr_do <lista_comando> pr_while "(" <expressao> ")" pr_end";" ;
+ 
+<tipo> ::= pr_int | pr_float | pr_char | pr_string | pr_boolean ;
+ 
+<valor> ::= cint | cfloat | cchar | cstring | pr_true | pr_false ;
+ 
+<comando_atribuicao> ::= identificador"=" <expressao>";" ;
+
+<lista_de_identificadores> ::= identificador <lista_de_identificadores3> ;
+<lista_de_identificadores3> ::= î | "," <lista_de_identificadores> ;
+
+<expressao> ::= <elemento> <expressao_> ;
+<expressao_> ::= î | "&&" <elemento> <expressao_> | "||" <elemento> <expressao_> ;
+<elemento> ::= <relacional> | pr_true | pr_false | "!" <elemento> ;
+
+<relacional> ::= <aritmetica> <relacional_> ;
+<relacional_> ::= î | <operador_relacional> <aritmetica> ;
+<operador_relacional> ::= "==" | "!=" | "<" | ">" ;
+
+<aritmetica> ::= <termo> <aritmetica_> ;
+<aritmetica_> ::= î | "+" <termo> <aritmetica_> | "-" <termo> <aritmetica_> ;
+
+<termo> ::= <fator> <termo_> ;
+<termo_> ::= î | "*" <fator> <termo_>
+ | "/" <fator> <termo_>
+ | "%" <fator> <termo_> ;
+
+<fator> ::= identificador |
+ cint |
+ cfloat |
+ cchar |
+ cstring |
+ "(" <expressao> ")" |
+ "+" <fator> |
+ "-" <fator> ;
+
