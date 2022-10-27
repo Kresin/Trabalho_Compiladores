@@ -18,7 +18,10 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -348,40 +351,45 @@ public class MainMenu extends javax.swing.JFrame {
         Trabalho2 lexico = new Trabalho2();
         Sintatico sintatico = new Sintatico();
         Semantico semantico = new Semantico();
-        //...
-        lexico.setInput(jTextArea_editor.getText());
-        //...
+
+        Reader reader = new StringReader(jTextArea_editor.getText());
+        lexico.setInput(reader);
         try {
             sintatico.parse(lexico, semantico);    // tradução dirigida pela sintaxe
             jTextArea_messages.setText("Programa compilado com sucesso");
         } // mensagem: programa compilado com sucesso - área reservada para mensagens
         catch (LexicalError e) {
             //Trata erros léxicos, conforme especificação da parte 2 - do compilador
+            //TODO Converter getPosition em número da linha
+            int numberLine = getErrorLine(jTextArea_editor.getText(), e.getPosition());
+            jTextArea_messages.setText("Erro na linha " + numberLine + " - " + e.getMessage());
         } catch (SyntaticError e) {
-            System.out.println(e.getPosition() + " símbolo encontrado: na entrada " + e.getMessage());
-
+            int numberLine = getErrorLine(jTextArea_editor.getText(), e.getPosition());
+            jTextArea_messages.setText("Erro na linha " + numberLine + " - " + e.getMessage());
             //Trata erros sintáticos
             //linha 				sugestão: converter getPosition em linha
             //símbolo encontrado    sugestão: implementar um método getToken no sintatico
             //mensagem - símbolos esperados,   alterar ParserConstants.java, String[] PARSER_ERROR		
         } catch (SemanticError e) {
+            int numberLine = getErrorLine(jTextArea_editor.getText(), e.getPosition());
+            jTextArea_messages.setText("Erro na linha " + numberLine + " - " + e.getMessage());
             //Trata erros semânticos
         }
     }//GEN-LAST:event_jButton_compileActionPerformed
 
-    private String getLineText(String text) {
-        StringBuilder stringBuilder = new StringBuilder("        ");
-        return replaceWhiteSpaces(stringBuilder, text);
-    }
-
-    private String getClassText(String text) {
-        StringBuilder stringBuilder = new StringBuilder("                     ");
-        return replaceWhiteSpaces(stringBuilder, text);
-    }
-
-    private String replaceWhiteSpaces(StringBuilder stringBuilder, String text) {
-        stringBuilder.replace(0, text.length(), text);
-        return stringBuilder.toString();
+    private int getErrorLine(String text, int errorPosition) {
+        int errorLine = 1;
+        int actualPosition = 0;
+        String[] lines = text.split("\\r?\\n|\\r");
+        for (String line : lines) {
+            actualPosition += line.length();
+            if (actualPosition > errorPosition) {
+                break;
+            }
+            errorLine ++;
+        }
+        
+        return errorLine;
     }
 
     private void jButton_cutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_cutActionPerformed

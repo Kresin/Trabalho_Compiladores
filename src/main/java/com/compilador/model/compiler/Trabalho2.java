@@ -6,15 +6,26 @@ public class Trabalho2 implements Constants {
     private String input;
 
     public Trabalho2() {
-        this("");
+        this(new java.io.StringReader(""));
     }
 
-    public Trabalho2(String input) {
+    public Trabalho2(java.io.Reader input) {
         setInput(input);
     }
 
-    public void setInput(String input) {
-        this.input = input;
+    public void setInput(java.io.Reader input) {
+        StringBuffer bfr = new StringBuffer();
+        try {
+            int c = input.read();
+            while (c != -1) {
+                bfr.append((char) c);
+                c = input.read();
+            }
+            this.input = bfr.toString();
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+
         setPosition(0);
     }
 
