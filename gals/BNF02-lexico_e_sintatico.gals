@@ -149,7 +149,7 @@ pr_while = identificador: "while"
 <lista_de_instrucoes1>
 <lista_de_instrucoes2>
 #Grammar
-<programa> ::= pr_fun pr_main "{" <lista_de_instrucoes> "}" ;
+<programa> ::= #15 pr_fun pr_main "{" <lista_de_instrucoes> "}" #16 ;
 
 <lista_de_instrucoes> ::= <lista_de_instrucoes2><lista_de_instrucoes1> ;
 <lista_de_instrucoes1> ::=   <lista_de_instrucoes> | î ;
@@ -170,8 +170,8 @@ pr_while = identificador: "while"
 <comando_entrada> ::= pr_readln "(" <entrada_opcional> <lista_de_identificadores> ")" ";" ;
 <entrada_opcional> ::= cstring"," | î ;
  
-<comando_saida> ::= pr_print "(" <lista_expressao> ")" ";" | pr_println "(" <lista_expressao> ")" ";" ;
-<lista_expressao> ::= <expressao><lista_expressao1> ;
+<comando_saida> ::= pr_print "(" <lista_expressao> ")" ";" | pr_println "(" <lista_expressao> ")" #17 ";" ;
+<lista_expressao> ::= <expressao> #14 <lista_expressao1> ;
 <lista_expressao1> ::= ","<lista_expressao> | î ;
  
 <comando_selecao> ::= pr_if"(" <expressao> ")" <lista_comando> <selecao_opcional> pr_end";" ;
@@ -189,27 +189,27 @@ pr_while = identificador: "while"
 <lista_de_identificadores3> ::= î | "," <lista_de_identificadores> ;
 
 <expressao> ::= <elemento> <expressao_> ;
-<expressao_> ::= î | "&&" <elemento> <expressao_> | "||" <elemento> <expressao_> ;
-<elemento> ::= <relacional> | pr_true | pr_false | "!" <elemento> ;
+<expressao_> ::= î | "&&" <elemento> #18 <expressao_> | "||" <elemento> #19 <expressao_> ;
+<elemento> ::= <relacional> | pr_true #11 | pr_false #12 | "!" <elemento> #13 ;
 
 <relacional> ::= <aritmetica> <relacional_> ;
-<relacional_> ::= î | <operador_relacional> <aritmetica> ;
+<relacional_> ::= î | <operador_relacional> #9 <aritmetica> #10 ;
 <operador_relacional> ::= "==" | "!=" | "<" | ">" ;
 
 <aritmetica> ::= <termo> <aritmetica_> ;
-<aritmetica_> ::= î | "+" <termo> <aritmetica_> | "-" <termo> <aritmetica_> ;
+<aritmetica_> ::= î | "+" <termo> #1 <aritmetica_> | "-" <termo> #2 <aritmetica_> ;
 
 <termo> ::= <fator> <termo_> ;
-<termo_> ::= î | "*" <fator> <termo_>
- | "/" <fator> <termo_>
- | "%" <fator> <termo_> ;
+<termo_> ::= î | "*" <fator> #3 <termo_>
+ | "/" <fator> #4 <termo_>
+ | "%" <fator> #20 <termo_> ;
 
 <fator> ::= identificador |
- cint |
- cfloat |
- cchar |
- cstring |
+ cint 		#5 |
+ cfloat 		#6 |
+ cchar 		#21 |
+ cstring 	#22 |
  "(" <expressao> ")" |
- "+" <fator> |
- "-" <fator> ;
+ "+" <fator> 	#7 |
+ "-" <fator>  	#8 ;
 

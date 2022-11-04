@@ -28,7 +28,7 @@
       <configuration>
         <archive>
           <manifest>
-            <mainClass>com.compilador.model.compiler.Main</mainClass>
+            <mainClass>com.compilador.model.Main</mainClass>
           </manifest>
         </archive>
         <descriptorRefs>

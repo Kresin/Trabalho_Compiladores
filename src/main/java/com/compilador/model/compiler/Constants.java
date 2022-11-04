@@ -54,4 +54,4 @@ public interface Constants extends ScannerConstants, ParserConstants {
     int t_TOKEN_48 = 48; //"||"
 
 }
-        
+

@@ -5,6 +5,7 @@
 package com.compilador.model;
 
 import com.compilador.view.MainMenu;
+import java.util.Scanner;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -13,34 +14,16 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author gabriel.kresin
  */
 public class Main {
-    
-    public static void main(String[] args) {
 
-        String s = "fun main { \n" +
-                    "\n" +
-                    "var lado: int; \n" +
-                    "\n" +
-                    "readln (\"digite o lado do quadrado: , lado); \n" +
-                    "area = lado * lado; \n" +
-                    "print area); \n" +
-                    "\n" +
-                    "}";
-        
-        int errorPosition = 38 - 1;
-        String[] lines = s.split("\\r?\\n|\\r");
-        int actualPosition = 0;
-        int line = 0;
-        int errorLine = 1;
-        for (String line1 : lines) {
-            actualPosition += line1.length();
-            if (actualPosition > errorPosition) {
-                break;
-            }
-            errorLine ++;
-        }
-        
-        System.out.println("Erro na linha " + (errorLine));
-        
+    public static void main(String[] args) {
+        do {
+            System.out.println("Informe o número: ");
+            Scanner scanner = new Scanner(System.in);
+            String numero = scanner.nextLine();
+            double convertIntFromString = convertFloatFromString(numero);
+            System.out.println(convertIntFromString);
+        } while (true);
+
 //        try {
 //            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 //        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException ex) {
@@ -49,5 +32,41 @@ public class Main {
 //        MainMenu mainMenu = new MainMenu();
 //        mainMenu.setVisible(true);
     }
-    
+
+    private static long convertLongFromString(String number) {
+        if (number.contains("d")) {
+            int index = number.indexOf("d");
+            int n1 = Integer.parseInt(number.substring(0, index));
+            int potenciador = Integer.parseInt(number.substring(index + 1, number.length()));
+            Double n2 = Math.pow(10, potenciador);
+            System.out.println(n2.intValue());
+            return n1 * n2.longValue();
+        }
+        return 0;
+    }
+
+    private static double convertFloatFromString(String number) {
+        if (number.contains(".") && number.contains("d")) {
+            Integer indexPonto = number.indexOf(".");
+            Integer indexD = number.indexOf("d");
+            Integer n1 = 0;
+            if (indexPonto != 0) {
+                n1 = Integer.parseInt(number.substring(0, indexPonto));
+            }
+            Integer n2 = Integer.parseInt(number.substring(indexPonto + 1, indexD));
+            Integer potenciador = Integer.parseInt(number.substring(indexD + 1, number.length()));
+
+            String real = "";
+            if (n1 == 0) {
+                real = "0." + n2;
+            } else {
+                real = n1 + "." + n2;
+            }
+            
+            Double parseFloat = Double.parseDouble(real);
+            return parseFloat * Math.pow(10, potenciador);
+        }
+        return 0;
+    }
+
 }
