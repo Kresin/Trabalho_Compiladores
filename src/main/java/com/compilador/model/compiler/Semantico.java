@@ -8,6 +8,10 @@ public class Semantico implements Constants {
     private String operador;
     private ArrayList<String> codigos;
     private Stack<String> pilhaTipos;
+    private String tipoVar;
+    private ArrayList<String> listaId;
+    private Stack<String> pilhaRotulos;
+    private String tabelaSimbolos;
 
     public void executeAction(int action, Token token) throws SemanticError {
         switch (action) {
@@ -76,6 +80,28 @@ public class Semantico implements Constants {
                 break;
             case 22:
 
+                break;
+            case 24:
+                break;
+            case 25:
+                break;
+            case 26:
+                break;
+            case 27:
+                break;
+            case 28:
+                break;
+            case 30:
+                break;
+            case 31:
+                break;
+            case 32:
+                break;
+            case 33:
+                break;
+            case 34:
+                break;
+            case 35:
                 break;
         }
 
