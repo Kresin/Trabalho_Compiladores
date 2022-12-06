@@ -1,6 +1,7 @@
 package com.compilador.model.compiler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
 
 public class Semantico implements Constants {
@@ -11,7 +12,7 @@ public class Semantico implements Constants {
     private String tipoVar;
     private ArrayList<String> listaId;
     private Stack<String> pilhaRotulos;
-    private String tabelaSimbolos;
+    private HashMap<String, String> tabelaSimbolos;
 
     public void executeAction(int action, Token token) throws SemanticError {
         switch (action) {
@@ -22,10 +23,10 @@ public class Semantico implements Constants {
                 acao02();
                 break;
             case 3:
-
+                acao03();
                 break;
             case 4:
-
+                acao04();
                 break;
             case 5:
                 acao05(token.getLexeme());
@@ -34,25 +35,25 @@ public class Semantico implements Constants {
                 acao06(token.getLexeme());
                 break;
             case 7:
-
+                acao07();
                 break;
             case 8:
-
+                acao08();
                 break;
             case 9:
-
+                acao09(token.getLexeme());
                 break;
             case 10:
-
+                acao10();
                 break;
             case 11:
-
+                acao11();
                 break;
             case 12:
-
+                acao12();
                 break;
             case 13:
-
+                acao13();
                 break;
             case 14:
                 acao14();
@@ -67,41 +68,52 @@ public class Semantico implements Constants {
                 acao17();
                 break;
             case 18:
-
+                acao18();
                 break;
             case 19:
-
+                acao19();
                 break;
             case 20:
-
+                acao20();
                 break;
             case 21:
-
+                acao21(token.getLexeme());
                 break;
             case 22:
-
+                acao22(token.getLexeme());
                 break;
             case 24:
+                acao24();
                 break;
             case 25:
+                acao25();
                 break;
             case 26:
+                acao26();
                 break;
             case 27:
+                acao27();
                 break;
             case 28:
+                acao28();
                 break;
             case 30:
+                acao30(token.getLexeme());
                 break;
             case 31:
+                acao31();
                 break;
             case 32:
+                acao32(token.getLexeme());
                 break;
             case 33:
+                acao33(token.getLexeme());
                 break;
             case 34:
+                acao34();
                 break;
             case 35:
+                acao35();
                 break;
         }
 
@@ -337,7 +349,7 @@ public class Semantico implements Constants {
         codigos.add("xor");
     }
 
-    private void acao14() {
+    private void acao14() {//TODO Rever
         /**
          * tipo:= pilha_tipos.desempilha se (tipo=int64) então código.adiciona
          * (conv.i8) fimse código.adiciona ("call void
@@ -381,7 +393,7 @@ public class Semantico implements Constants {
                 + "}");
     }
 
-    private void acao17() {
+    private void acao17() { //TODO rever
 //        String breakLine = "\n";
         codigos.add("ldstr \"\n\"");
         codigos.add("call void [mscorlib]System.Console::Write(string)"); //TODO Validar a quebra d elinha com a professora
@@ -465,12 +477,103 @@ public class Semantico implements Constants {
                 codigos.add("ldstr " + lexeme);
                 break;
         }
-        
+
     }
 
     private void acao22(String lexeme) {
         pilhaTipos.push("string");
         codigos.add("ldstr " + lexeme);
+    }
+
+    private void acao24() {
+        codigos.add("brfalse ");
+        //https://github.com/RobertoDebarba/rd-compiler/blob/master/src/main/java/br/com/robertodebarba/rd_compiler/compiler/SemanticRunner.java void run28()
+        
+    }
+
+    private void acao25() {
+
+    }
+
+    private void acao26() {
+
+    }
+
+    private void acao27() {
+
+    }
+
+    private void acao28() {
+
+    }
+
+    private void acao30(String lexeme) {
+        switch (lexeme) {
+            case "int":
+                tipoVar = "int64";
+                break;
+            case "float":
+                tipoVar = "float64";
+                break;
+            case "char":
+                tipoVar = "char";
+                break;
+            case "string":
+                tipoVar = "string";
+                break;
+            case "boolean":
+                tipoVar = "bool";
+                break;
+        }
+    }
+
+    private void acao31() {
+        for (String identificador : listaId) {
+            String tipo = tipoVar;
+            if (tipoVar.equals("char")) {
+                tipo = "string";
+            }
+            codigos.add(".locals " + identificador + " " + tipo);
+            tabelaSimbolos.put(identificador, tipo);
+        }
+        listaId.clear();
+    }
+
+    private void acao32(String lexeme) {
+        listaId.add(lexeme);
+    }
+
+    private void acao33(String lexeme) {
+        //(b) empilhar o tipo na pilha_tipos, sendo o tipo do identificador recuperado na tabela_símbolos;
+        String tipo = tabelaSimbolos.get(lexeme);
+        pilhaTipos.push(tipo);
+
+        //(c) se o identificador for do tipo int64, gerar código objeto para converter o valor para float64 (conv.r8). 
+        if (tipo.equals("int64")) {
+            codigos.add("conv.r8");
+        }
+        
+        // (a) gerar código objeto para carregar o valor armazenado em identificador (ldloc token.getLexeme); 
+        codigos.add("ldloc " + lexeme);
+    }
+
+    private void acao34() {
+        String identificador = listaId.get(listaId.size() - 1);
+        String tipo = pilhaTipos.pop();
+        if (tipo.equals("int64")) {
+            codigos.add("conv.i8");
+        }
+        
+        codigos.add("stloc " + identificador);
+    }
+
+    private void acao35() {
+        for (String identificador : listaId) {
+            String tipo = tabelaSimbolos.get(identificador);
+            codigos.add("call string [mscorlib]System.Console::ReadLinbe()");
+            codigos.add("call " + tipo + " [mscorlib]System.classe::Parse(string)");
+            codigos.add("stloc " + identificador);
+        }
     }
 
     private long convertLongFromString(String number) {
