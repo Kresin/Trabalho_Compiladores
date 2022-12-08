@@ -13,6 +13,11 @@ public class Semantico implements Constants {
     private ArrayList<String> listaId;
     private Stack<String> pilhaRotulos;
     private HashMap<String, String> tabelaSimbolos;
+    private int totalRotulos = 0;
+
+    public ArrayList<String> getCodigos() {
+        return codigos;
+    }
 
     public void executeAction(int action, Token token) throws SemanticError {
         switch (action) {
@@ -486,25 +491,30 @@ public class Semantico implements Constants {
     }
 
     private void acao24() {
-        codigos.add("brfalse ");
-        //https://github.com/RobertoDebarba/rd-compiler/blob/master/src/main/java/br/com/robertodebarba/rd_compiler/compiler/SemanticRunner.java void run28()
-        
+        totalRotulos ++;
+        codigos.add("brfalse L" + totalRotulos);
+        pilhaRotulos.push("L" + totalRotulos);
     }
 
     private void acao25() {
-
+        totalRotulos ++;
+        codigos.add("br L" + totalRotulos); 
+        codigos.add(pilhaRotulos.pop() + ":");
+        pilhaRotulos.push("L" + totalRotulos);
     }
 
     private void acao26() {
-
+        codigos.add(pilhaRotulos.pop());
     }
 
     private void acao27() {
-
+        totalRotulos ++;
+        codigos.add("L" + totalRotulos + ":");
+        pilhaRotulos.push("L" + totalRotulos);
     }
 
     private void acao28() {
-
+        codigos.add("brtrue " + pilhaRotulos.pop());
     }
 
     private void acao30(String lexeme) {
