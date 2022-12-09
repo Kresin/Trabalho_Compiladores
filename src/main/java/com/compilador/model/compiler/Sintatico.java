@@ -47,13 +47,13 @@ public class Sintatico implements Constants {
                     return false;
                 }
             } else {
-                throw new SyntaticError(PARSER_ERROR[x], currentToken.getPosition());
+                throw new SyntaticError(PARSER_ERROR[x], currentToken.getPosition(), currentToken.getLexeme());
             }
         } else if (isNonTerminal(x)) {
             if (pushProduction(x, a)) {
                 return false;
             } else {
-                throw new SyntaticError(PARSER_ERROR[x], currentToken.getPosition());
+                throw new SyntaticError(PARSER_ERROR[x], currentToken.getPosition(), currentToken.getLexeme());
             }
         } else // isSemanticAction(x)
         {

@@ -366,7 +366,15 @@ public class MainMenu extends javax.swing.JFrame {
             jTextArea_messages.setText("Erro na linha " + numberLine + " - " + e.getMessage());
         } catch (SyntaticError e) {
             int numberLine = getErrorLine(jTextArea_editor.getText(), e.getPosition());
-            jTextArea_messages.setText("Erro na linha " + numberLine + " - " + e.getMessage());
+            if (e.getToken().equals("$")) {
+                if(reader.toString().isEmpty()) {
+                    jTextArea_messages.setText("encontrado EOF");
+                } else {
+                    jTextArea_messages.setText("Erro na linha " + numberLine + " - " + "encontrado EOF " + e.getMessage());
+                }
+            } else {
+                jTextArea_messages.setText("Erro na linha " + numberLine + " - " + "encontrado " + e.getToken() + " " + e.getMessage());
+            }
             //Trata erros sintáticos
             //linha 				sugestão: converter getPosition em linha
             //símbolo encontrado    sugestão: implementar um método getToken no sintatico
