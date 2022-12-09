@@ -18,10 +18,10 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -356,6 +356,7 @@ public class MainMenu extends javax.swing.JFrame {
         lexico.setInput(reader);
         try {
             sintatico.parse(lexico, semantico);    // tradução dirigida pela sintaxe
+            createDotIlFile(semantico.getCodigos());
             jTextArea_messages.setText("Programa compilado com sucesso");
         } // mensagem: programa compilado com sucesso - área reservada para mensagens
         catch (LexicalError e) {
@@ -377,6 +378,19 @@ public class MainMenu extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton_compileActionPerformed
 
+    private void createDotIlFile(ArrayList<String> code) {
+        FileService fileService = new FileService();
+        StringBuilder sb = new StringBuilder();
+        for (String lineCode : code) {
+            sb.append(lineCode).append("\n");
+        }
+        
+        String path = jLabel_statusBar.getText();
+        String ilFilePath = path.substring(0, path.length() - 3) + "il";
+        fileService.saveFile(ilFilePath, sb.toString());
+        System.out.println("Código fonte .il salvo em: " + ilFilePath);
+    }
+    
     private int getErrorLine(String text, int errorPosition) {
         int errorLine = 1;
         int actualPosition = 0;

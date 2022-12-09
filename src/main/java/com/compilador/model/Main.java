@@ -41,8 +41,9 @@ public class Main {
             Double n2 = Math.pow(10, potenciador);
             System.out.println(n2.intValue());
             return n1 * n2.longValue();
+        } else {
+            return Long.parseLong(number);
         }
-        return 0;
     }
 
     private static double convertFloatFromString(String number) {
@@ -62,11 +63,12 @@ public class Main {
             } else {
                 real = n1 + "." + n2;
             }
-            
+
             Double parseFloat = Double.parseDouble(real);
             return parseFloat * Math.pow(10, potenciador);
+        } else {
+            return Double.parseDouble(number);
         }
-        return 0;
     }
 
 }
